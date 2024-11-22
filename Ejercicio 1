@@ -1,4 +1,4 @@
-import numpy as np  # Se importa numpy, aunque no es utilizado en este código
+########## a) BISECCION ##########
 
 def Biseccion(Tol, N, f, a, b):
     # Verificamos si hay un cambio de signo en el intervalo [a, b]
@@ -48,3 +48,56 @@ b = float(input("Intervalo valor de b: "))  # Extremo derecho del intervalo
 
 # Llamamos a la función de bisección con los parámetros dados
 Biseccion(Tol, N, f, a, b)  # Ejecutamos el método de bisección
+
+
+
+########## b) SECANTE ##########
+
+def Secante(f, Tol, N, x0, x1):
+    # N es el número de iteraciones
+    # Tol es la tolerancia
+    # f es la función a la cual se le quiere obtener las raíces
+    # x0 es el extremo izquierdo del intervalo
+    # x1 es el extremo derecho del intervalo
+
+    # contador de iteraciones
+    n = 1
+    
+    # mientras no se haya superado el límite de iteraciones
+    while( N >= n ):
+        # cálculo de los valores de fx0 y fx1, es decir, evaluamos la función en los puntos x0 y x1
+        fx0, fx1 = f(x0), f(x1)
+        
+        # se calcula la siguiente aproximación de la raíz usando la fórmula de la secante
+        xn = x1 - fx1 * ((x1 - x0) / float(fx1 - fx0))
+        
+        # en caso de que se cumplan los criterios de paro
+        # - la función en xn sea menor o igual a la tolerancia
+        # - la diferencia entre x0 y x1 sea menor o igual a la tolerancia
+        # se devuelve la raíz aproximada
+        if (abs(f(xn)) <= Tol and abs(x0 - x1) <= Tol):
+            return xn
+        
+        # si no se cumple el criterio de paro, actualizamos los valores de x0 y x1
+        # x0 pasa a ser x1, y x1 pasa a ser xn (la nueva aproximación)
+        x0 = x1
+        x1 = xn
+        
+        # incremento en las iteraciones
+        n += 1
+
+    # Si no se alcanza el criterio de paro, imprimimos el valor aproximado de la raíz después del máximo de iteraciones
+    else:
+        print("El valor aproximado de tu raíz es " + str(x1))
+
+# Solicitamos al usuario la función, tolerancia, número de iteraciones, y los puntos de inicio
+f_str = input("Función: ")
+f = lambda x: eval(f_str)  # Convertimos el string introducido por el usuario en una función
+Tol = float(input("Tolerancia: "))
+N = int(input("Número de iteraciones: "))
+x0 = float(input("Intervalo valor de x0: "))
+x1 = float(input("Intervalo valor de x1: "))
+
+# Llamamos a la función Secante para encontrar la raíz
+Secante(f, Tol, N, x0, x1)
+
