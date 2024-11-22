@@ -1,0 +1,50 @@
+import numpy as np  # Se importa numpy, aunque no es utilizado en este código
+
+def Biseccion(Tol, N, f, a, b):
+    # Verificamos si hay un cambio de signo en el intervalo [a, b]
+    fa, fb = f(a), f(b)  # Evaluamos la función en los extremos del intervalo
+    if fa * fb > 0.0:  # Si el producto es positivo, no hay raíz en el intervalo
+        print("No tiene raíces en el intervalo")
+        return None  # Devolvemos None si no hay raíz en el intervalo
+
+    x0 = a  # Inicializamos x0 con el valor de 'a' para la primera iteración
+    Iter = 0  # Inicializamos el contador de iteraciones en 0
+    
+    # Comienza el ciclo de bisección, se ejecutará hasta que se alcance la tolerancia o se agoten las iteraciones
+    while Iter < N:
+        x1 = (a + b) / 2.0  # Calculamos el punto medio del intervalo [a, b]
+        fx1 = f(x1)  # Evaluamos la función en el punto medio x1
+        
+        # Verificamos si el valor de la función en x1 es suficientemente pequeño
+        # o si el cambio entre x1 y x0 es suficientemente pequeño
+        if abs(fx1) <= Tol or abs(x1 - x0) <= Tol:
+            print(f"Tu raíz es aproximadamente {x1}")  # Si se cumple la condición de tolerancia, imprimimos el resultado
+            return x1  # Devolvemos la raíz aproximada y terminamos la función
+        
+        # Actualizamos los extremos del intervalo en función del signo de f(x1)
+        if fa * fx1 < 0:  # Si hay un cambio de signo entre fa y fx1, la raíz está en [a, x1]
+            b = x1  # Actualizamos b a x1
+            fb = fx1  # Evaluamos la función en el nuevo extremo b
+        else:  # Si no, la raíz está en [x1, b]
+            a = x1  # Actualizamos a a x1
+            fa = fx1  # Evaluamos la función en el nuevo extremo a
+        
+        x0 = x1  # Actualizamos x0 para la siguiente iteración
+        Iter += 1  # Aumentamos el contador de iteraciones
+    
+    # Si no encontramos la raíz dentro del número máximo de iteraciones, mostramos el valor aproximado
+    print(f"El valor aproximado de tu raíz es {x1}")
+    return x1  # Devolvemos el valor aproximado de la raíz después de N iteraciones
+
+# Solicitar los parámetros al usuario
+f_str = input("Función: ")  # Pedimos al usuario que ingrese la función en formato de texto
+f = lambda x: eval(f_str)  # Convertimos el string de la función en una función real utilizando 'eval'
+
+# Pedimos los valores de tolerancia, número de iteraciones, y el intervalo [a, b]
+Tol = float(input("Tolerancia: "))  # Tolerancia para la precisión de la raíz
+N = int(input("Número de iteraciones: "))  # Número máximo de iteraciones
+a = float(input("Intervalo valor de a: "))  # Extremo izquierdo del intervalo
+b = float(input("Intervalo valor de b: "))  # Extremo derecho del intervalo
+
+# Llamamos a la función de bisección con los parámetros dados
+Biseccion(Tol, N, f, a, b)  # Ejecutamos el método de bisección
