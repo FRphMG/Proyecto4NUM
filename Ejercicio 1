@@ -52,7 +52,6 @@ Biseccion(Tol, N, f, a, b)  # Ejecutamos el método de bisección
 
 
 ########## b) SECANTE ##########
-
 def Secante(f, Tol, N, x0, x1):
     # N es el número de iteraciones
     # Tol es la tolerancia
@@ -101,3 +100,116 @@ x1 = float(input("Intervalo valor de x1: "))
 # Llamamos a la función Secante para encontrar la raíz
 Secante(f, Tol, N, x0, x1)
 
+
+
+########## c) NEWTON ##########
+def Newton(f, df, Tol, N, x0):
+  # N es el número máximo de iteraciones que se realizarán.
+  # Tol es la tolerancia, el error aceptable para considerar que la raíz se ha encontrado.
+  # f es la función a la cual se le quiere obtener las raíces.
+  # df es la derivada de la función f.
+  # x0 es el valor inicial para comenzar la búsqueda de la raíz.
+
+  Iter = 0  # Se inicializa el contador de iteraciones.
+
+  # Se comienza un ciclo que continuará mientras el número de iteraciones sea menor o igual a N.
+  while Iter <= N:
+    fx = f(x0)  # Evaluamos la función f en el punto x0.
+    dfx = df(x0)  # Evaluamos la derivada de la función en el punto x0.
+
+    # Aplicamos la fórmula de Newton-Raphson para calcular el siguiente valor de x: xn = x0 - f(x0)/df(x0).
+    xn = x0 - (fx / float(dfx))
+
+    # Verificamos si la diferencia entre la nueva estimación xn y la función evaluada en xn es menor que la tolerancia.
+    # Si ambas condiciones se cumplen, significa que hemos encontrado una raíz con suficiente precisión.
+    if abs(f(xn)) <= Tol and abs(xn - x0) <= Tol:
+      print("Tu raíz es " + str(xn))  # Imprime la raíz encontrada.
+      return xn  # Retorna el valor de la raíz encontrada.
+
+    x0 = xn  # Actualizamos x0 con el valor de xn para la siguiente iteración.
+
+    Iter += 1  # Incrementamos el contador de iteraciones.
+
+  else:
+    # Si no se encuentra la raíz después de N iteraciones, se imprime el valor de xn como la mejor aproximación.
+    print("El valor aproximado de tu raíz es " + str(xn))
+
+# Esta sección permite al usuario ingresar la función f y su derivada df de manera interactiva como cadenas de texto.
+f_str = input("Función: ")
+df_str = input("Derivada: ")
+
+# Se crea una función lambda que convierte la cadena de texto f_str en una función que se puede evaluar.
+f = lambda x: eval(f_str) 
+
+# Se crea una función lambda que convierte la cadena de texto df_str en la derivada de la función que se puede evaluar.
+df = lambda x: eval(df_str)
+
+# Se solicitan al usuario la tolerancia, el número de iteraciones máximas y el valor inicial x0.
+Tol = float(input("Tolerancia: "))
+N = int(input("Número de iteraciones: "))
+x0 = float(input("Intervalo valor de x0: "))
+
+# Finalmente, se llama a la función Newton pasando los parámetros correspondientes.
+Newton(f, df, Tol, N, x0)
+
+
+
+########## d) REGLA FALSA ##########
+# Definición de la función para el método de la Regla Falsa
+def ReglaFalsa(Tol, N, f, a, b):
+  # Tol: Tolerancia (precisión requerida para la raíz)
+  # N: Número de iteraciones máximo
+  # f: La función a la cual se le busca la raíz
+  # a: Extremo izquierdo del intervalo
+  # b: Extremo derecho del intervalo
+
+  # Evaluar la función en los extremos del intervalo
+  fa, fb = f(a), f(b)
+  
+  # Verificar si los valores en a y b tienen el mismo signo (no hay raíz en el intervalo)
+  if fa * fb > 0.0:
+    print("No tiene raíces en el intervalo")  # Si los productos son positivos, no hay cambio de signo en el intervalo
+    return None  # Retorna None porque no se puede encontrar la raíz en este intervalo
+
+  x0 = 0.0  # Inicializar la variable x0 con un valor arbitrario (que no se usa inicialmente)
+  Iter = 0  # Contador de iteraciones, comenzamos desde 0
+  
+  # Bucle principal para el método de la Regla Falsa
+  while Iter <= N:
+    # Fórmula de la Regla Falsa para encontrar el nuevo valor de la raíz (x1)
+    x1 = (a * fb - b * fa) / (fb - fa)
+    
+    # Evaluamos la función en el nuevo valor x1
+    fx1 = f(x1)
+
+    # Verificamos si la función en x1 es lo suficientemente pequeña (cerca de 0)
+    # o si el cambio entre las iteraciones consecutivas es lo suficientemente pequeño
+    if abs(fx1) <= Tol and abs(x1 - x0) <= Tol:
+      print("Tu raiz es " + str(x1))  # Si se cumple la condición, se muestra el resultado
+      return x1  # Retornamos la raíz encontrada
+
+    # Actualizamos el intervalo a partir del valor de x1 según el signo de la función en los extremos
+    if fa * fx1 < 0:
+      b = x1  # Si el producto fa*fx1 es negativo, la raíz está entre a y x1, por lo que b se actualiza
+    if fx1 * fb < 0:
+      a = x1  # Si el producto fx1*fb es negativo, la raíz está entre x1 y b, por lo que a se actualiza
+
+    # Guardamos el valor de x1 como el nuevo punto anterior (x0) para la siguiente iteración
+    x0 = x1
+    Iter += 1  # Incrementamos el contador de iteraciones
+    
+  # Si se ha alcanzado el número máximo de iteraciones sin cumplir la tolerancia
+  else:
+    print("El valor aproximado de tu raiz es " + str(x1))  # Imprimimos el valor aproximado de la raíz encontrada
+
+# Solicitar los datos de entrada al usuario
+f_str = input("Función: ")  # Entrada de la función como cadena de texto
+f = lambda x: eval(f_str)  # Convertir la cadena en una función lambda que pueda ser evaluada
+
+Tol = float(input("Tolerancia: "))  # Entrada de la tolerancia, convertida a float
+N = int(input("Número de iteraciones: "))  # Entrada del número de iteraciones, convertida a entero
+a = float(input("Intervalo valor de a: "))  # Entrada del valor de a (extremo izquierdo del intervalo)
+b = float(input("Intervalo valor de b: "))  # Entrada del valor de b (extremo derecho del intervalo)
+
+# Llamada a la función ReglaFalsa con los valores proporcionados por el usuario
+ReglaFalsa(Tol, N, f, a, b)
