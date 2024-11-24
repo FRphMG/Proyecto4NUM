@@ -1,0 +1,66 @@
+import math  # Importa el módulo math, que nos permite usar funciones matemáticas como exp(x), cos(x), sin(x), etc.
+
+# Definición del método de Newton
+def Newton(f, df, Tol, N, x0):
+  Iter = 0  # Inicializamos el contador de iteraciones
+
+  # Comenzamos un bucle para realizar las iteraciones de Newton
+  while Iter <= N:
+    fx = f(x0)  # Calculamos el valor de la función f(x) en el punto actual x0
+    dfx = df(x0)  # Calculamos el valor de la derivada de la función df(x) en el punto x0
+
+    # Aplicamos la fórmula de Newton para calcular el siguiente valor de x
+    xn = x0 - (fx / float(dfx))
+    
+    # Verificamos si la solución ha convergido, es decir, si el valor de f(xn) es suficientemente pequeño
+    # y si la diferencia entre xn y x0 también es pequeña
+    if abs(f(xn)) <= Tol and abs(xn - x0) <= Tol:
+      print("Tu raiz es " + str(xn))  # Imprimimos la raíz encontrada
+      return xn  # Retornamos el valor de la raíz encontrada
+
+    x0 = xn  # Si no hemos convergido, actualizamos x0 con el nuevo valor xn
+
+    Iter += 1  # Incrementamos el contador de iteraciones
+
+  else:
+    # Si no se encuentra la solución en N iteraciones, imprimimos el valor aproximado de la raíz
+    print("El valor aproximado de tu raiz es " + str(xn))
+
+
+# Inciso a
+print("---Inciso a")
+# Definimos la función f(x) = e^x + 2 - x + 2*cos(x) - 6
+f = lambda x: math.exp(x) + 2 - x + 2 * math.cos(x) - 6
+# Derivada de la función: f'(x) = e^x - 1 - 2*sin(x)
+df = lambda x: math.exp(x) - 1 - 2 * math.sin(x)
+# Llamamos al método de Newton con una tolerancia de 1E-5, máximo de 100 iteraciones y valor inicial de x0 = 1.5
+Newton(f, df, 1E-5, 100, 1.5)
+print("\n")
+
+# Inciso b
+print("---Inciso b")
+# Definimos la función f(x) = 2x*cos(2x) - (x-2)^2
+f = lambda x: 2 * x * math.cos(2 * x) - (x - 2) ** 2
+# Derivada de la función: f'(x) = 2*cos(2x) - 4x*sin(2x) - 2(x-2)
+df = lambda x: 2 * math.cos(2 * x) - 4 * x * math.sin(2 * x) - 2 * (x - 2)
+# Llamamos al método de Newton con el intervalo [2,3], iniciando con x0 = 2.5
+print("+ Para [2,3]")
+Newton(f, df, 1E-5, 100, 2.5)
+# Llamamos al método de Newton con el intervalo [3,4], iniciando con x0 = 3.5
+print("+ Para [3,4]")
+Newton(f, df, 1E-5, 100, 3.5)
+print("\n")
+
+# Inciso c
+print("---Inciso c")
+# Definimos la función f(x) = e^x - 3x^2
+f = lambda x: math.exp(x) - 3 * x**2
+# Derivada de la función: f'(x) = e^x - 6x
+df = lambda x: math.exp(x) - 6 * x
+# Llamamos al método de Newton con el intervalo [0,1], iniciando con x0 = 0.5
+print("+ Para [0,1]")
+Newton(f, df, 1E-5, 100, 0.5)
+# Llamamos al método de Newton con el intervalo [3,5], iniciando con x0 = 4
+print("+ Para [3,5]")
+Newton(f, df, 1E-5, 100, 4)
+
