@@ -1,0 +1,57 @@
+import math  # Importa el módulo de matemáticas para usar funciones como exponencial (exp), coseno (cos), etc.
+
+# Definición de la función Secante que implementa el método de la secante
+def Secante(f, Tol, N, x0, x1):
+    # Inicializamos un contador de iteraciones
+    n = 1
+
+    # Bucle while que se ejecuta mientras no se haya alcanzado el número máximo de iteraciones (N)
+    while( N >= n ):
+        # Evaluamos la función en los puntos x0 y x1 (calculamos f(x0) y f(x1))
+        fx0, fx1 = f(x0), f(x1)
+
+        # Calculamos la siguiente aproximación de la raíz utilizando la fórmula de la secante
+        xn = x1 - fx1 * ((x1 - x0) / float(fx1 - fx0))
+
+        # Verificamos si se cumple el criterio de paro: 
+        # - Si el valor absoluto de la función en xn es menor o igual a la tolerancia (Tol).
+        # - Si la diferencia entre x0 y x1 es menor o igual a la tolerancia (Tol).
+        if (abs(f(xn)) <= Tol and abs(x0 - x1) <= Tol):
+            return xn  # Si se cumple el criterio de paro, retornamos la raíz aproximada (xn)
+
+        # Si no se cumple el criterio de paro, actualizamos los valores de x0 y x1 para la siguiente iteración
+        # x0 se convierte en x1, y x1 se convierte en xn
+        x0 = x1
+        x1 = xn
+
+        # Incrementamos el contador de iteraciones
+        n += 1
+
+    # Si no se alcanza el criterio de paro después del número máximo de iteraciones, se imprime el valor aproximado de la raíz
+    else:
+        print("El valor aproximado de tu raíz es " + str(x1))
+
+# Inciso a: Definimos una función f(x) y aplicamos el método de la secante para encontrar su raíz.
+print("---Inciso a")
+f = lambda x: math.exp(x) + 2 - x + 2 * math.cos(x) - 6  # Definición de la función f(x)
+df = lambda x: math.exp(x) - 1 - 2 * math.sin(x)  # Definición de la derivada de f(x) (no utilizada aquí)
+Secante(f, 1E-5, 100, 1, 2)  # Llamamos a la función Secante con los parámetros adecuados (tolerancia 1E-5, máximo 100 iteraciones, x0=1, x1=2)
+print("\n")
+
+# Inciso b: Definimos una nueva función f(x) y aplicamos el método de la secante en dos intervalos diferentes.
+print("---Inciso b")
+f = lambda x: 2 * x * math.cos(2 * x) - (x - 2) ** 2  # Definición de la nueva función f(x)
+df = lambda x: 2 * math.cos(2 * x) - 4 * x * math.sin(2 * x) - 2 * (x - 2)  # Derivada de f(x) (no utilizada aquí)
+print("+ Para [2,3]")
+Secante(f, 1E-5, 100, 2, 3)  # Llamamos a la función Secante para el intervalo [2, 3]
+print("+ Para [3,4]")
+Secante(f, 1E-5, 100, 3, 4)  # Llamamos a la función Secante para el intervalo [3, 4]
+print("\n")
+
+# Inciso c: Definimos otra función f(x) y aplicamos el método de la secante en dos intervalos diferentes.
+print("---Inciso c")
+f = lambda x: math.exp(x) - 3 * x**2  # Definición de la nueva función f(x)
+print("+ Para [0,1]")
+Secante(f, 1E-5, 100, 0, 1)  # Llamamos a la función Secante para el intervalo [0, 1]
+print("+ Para [3,5]")
+Secante(f, 1E-5, 100, 3, 5)  # Llamamos a la función Secante para el intervalo [3, 5]
