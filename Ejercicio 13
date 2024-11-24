@@ -1,0 +1,169 @@
+import numpy as np
+from numpy import linalg as LA
+
+# Función f1 del sistema
+def f1(x1, x2):
+    return x1 + x2 * (x2 * (5 - x2) - 2) - 13
+
+# Función f2 del sistema
+def f2(x1, x2):
+    return x1 + x2 * (x2 * (1 + x2) + 14) - 29
+
+# Derivada parcial de f1 respecto a x1 (siempre 1)
+def df1_dx1(x1, x2):
+    return 1
+
+# Derivada parcial de f1 respecto a x2
+def df1_dx2(x1, x2):
+    return 5 - 3 * x2
+
+# Derivada parcial de f2 respecto a x1 (siempre 1)
+def df2_dx1(x1, x2):
+    return 1
+
+# Derivada parcial de f2 respecto a x2
+def df2_dx2(x1, x2):
+    return 1 + 4 * x2 + 2 * x2**2
+
+# Método de Newton para sistemas no lineales
+def NewtonVarias(aprox):
+    n = 0
+    while n < 100:  # máximo número de iteraciones
+        # Matriz Jacobiana 2x2
+        jacob = np.zeros([2, 2])
+
+        # Llenamos la matriz Jacobiana
+        jacob[0][0] = df1_dx1(aprox[0], aprox[1])
+        jacob[0][1] = df1_dx2(aprox[0], aprox[1])
+        jacob[1][0] = df2_dx1(aprox[0], aprox[1])
+        jacob[1][1] = df2_dx2(aprox[0], aprox[1])
+
+        # Evaluamos las funciones f1 y f2 en el punto aproximado
+        fx = np.array([f1(aprox[0], aprox[1]), f2(aprox[0], aprox[1])])
+
+        # Método de Newton: Aproximación = Aproximación - (Jacobiano)^(-1) * Evaluación de funciones
+        aprox = aprox - LA.solve(jacob, fx)
+
+        # Incrementar el contador de iteraciones
+        n += 1
+
+    # Devuelve la aproximación final
+    return aprox
+
+def main():
+    # Aproximación inicial (x1 = 15, x2 = -2)
+    aprox_inicial = np.array([15, -2])
+    
+    # Llamamos al método de Newton
+    sol = NewtonVarias(aprox_inicial)
+    
+    print('Aproximación de la solución:')
+    print(sol)
+    print('Evaluación en f1:')
+    print(f1(sol[0], sol[1]))
+    print('Evaluación en f2:')
+    print(f2(sol[0], sol[1]))
+
+# Ejecutamos el código
+main()
+
+
+
+
+###### b 
+import numpy as np
+from numpy import linalg as LA
+
+# Definir las funciones del sistema
+def f1(x1, x2, x3):
+    return x1**2 + x2**2 + x3**2 - 5  # La primera ecuación: x1^2 + x2^2 + x3^2 = 5
+
+def f2(x1, x2, x3):
+    return x1 + x2 - 1  # La segunda ecuación: x1 + x2 = 1
+
+def f3(x1, x2, x3):
+    return x1 + x3 - 3  # La tercera ecuación: x1 + x3 = 3
+
+# Derivadas parciales de las funciones
+# Derivadas de f1 con respecto a x1, x2, x3
+def df1_dx1(x1, x2, x3):
+    return 2 * x1  # Derivada parcial de f1 con respecto a x1
+
+def df1_dx2(x1, x2, x3):
+    return 2 * x2  # Derivada parcial de f1 con respecto a x2
+
+def df1_dx3(x1, x2, x3):
+    return 2 * x3  # Derivada parcial de f1 con respecto a x3
+
+# Derivadas de f2 con respecto a x1, x2, x3
+def df2_dx1(x1, x2, x3):
+    return 1  # Derivada parcial de f2 con respecto a x1
+
+def df2_dx2(x1, x2, x3):
+    return 1  # Derivada parcial de f2 con respecto a x2
+
+def df2_dx3(x1, x2, x3):
+    return 0  # Derivada parcial de f2 con respecto a x3
+
+# Derivadas de f3 con respecto a x1, x2, x3
+def df3_dx1(x1, x2, x3):
+    return 1  # Derivada parcial de f3 con respecto a x1
+
+def df3_dx2(x1, x2, x3):
+    return 0  # Derivada parcial de f3 con respecto a x2
+
+def df3_dx3(x1, x2, x3):
+    return 1  # Derivada parcial de f3 con respecto a x3
+
+# Método de Newton para tres variables
+def NewtonVarias(aprox):
+    n = 0
+    while n < 100:  # máximo número de iteraciones
+        # Matriz Jacobiana 3x3
+        jacob = np.zeros([3, 3])
+
+        # Llenamos la matriz Jacobiana con las derivadas parciales
+        jacob[0][0] = df1_dx1(aprox[0], aprox[1], aprox[2])
+        jacob[0][1] = df1_dx2(aprox[0], aprox[1], aprox[2])
+        jacob[0][2] = df1_dx3(aprox[0], aprox[1], aprox[2])
+        
+        jacob[1][0] = df2_dx1(aprox[0], aprox[1], aprox[2])
+        jacob[1][1] = df2_dx2(aprox[0], aprox[1], aprox[2])
+        jacob[1][2] = df2_dx3(aprox[0], aprox[1], aprox[2])
+
+        jacob[2][0] = df3_dx1(aprox[0], aprox[1], aprox[2])
+        jacob[2][1] = df3_dx2(aprox[0], aprox[1], aprox[2])
+        jacob[2][2] = df3_dx3(aprox[0], aprox[1], aprox[2])
+
+        # Evaluamos las funciones f1, f2, f3 en el punto aproximado
+        fx = np.array([f1(aprox[0], aprox[1], aprox[2]), 
+                       f2(aprox[0], aprox[1], aprox[2]), 
+                       f3(aprox[0], aprox[1], aprox[2])])
+
+        # Método de Newton: Aproximación = Aproximación - (Jacobiano)^(-1) * Evaluación de funciones
+        aprox = aprox - LA.solve(jacob, fx)  # Resolver el sistema lineal Jacobiano * delta = fx
+
+        # Incrementar el contador de iteraciones
+        n += 1
+
+    # Devuelve la aproximación final
+    return aprox
+
+def main():
+    # Aproximación inicial basada en los puntos dados
+    aprox_inicial = np.array([(1 + np.sqrt(3)) / 2, (1 - np.sqrt(3)) / 2, np.sqrt(3)])
+    
+    # Llamamos al método de Newton
+    sol = NewtonVarias(aprox_inicial)
+    
+    print('Aproximación de la solución:')
+    print(sol)
+    print('Evaluación en f1:')
+    print(f1(sol[0], sol[1], sol[2]))
+    print('Evaluación en f2:')
+    print(f2(sol[0], sol[1], sol[2]))
+    print('Evaluación en f3:')
+    print(f3(sol[0], sol[1], sol[2]))
+
+# Ejecutamos el código
+main()
