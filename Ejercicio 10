@@ -1,3 +1,7 @@
+# Yldefonso Hérnandez Danna Paola
+# Guzmán Martínez Frida Paola
+
+
 import math  # Importa el módulo de matemáticas para usar funciones como exponencial (exp), coseno (cos), etc.
 
 # Definición de la función Secante que implementa el método de la secante
