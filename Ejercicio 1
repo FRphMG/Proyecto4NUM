@@ -1,3 +1,6 @@
+# Yldefonso Hérnandez Danna Paola
+# Guzmán Martínez Frida Paola
+
 ########## a) BISECCION ##########
 
 def Biseccion(Tol, N, f, a, b):
