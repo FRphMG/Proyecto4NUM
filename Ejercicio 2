@@ -1,0 +1,75 @@
+# Yldefonso Hérnandez Danna Paola
+# Guzmán Martínez Frida Paola
+
+import numpy as np
+
+def Biseccion(Tol,N,f,a,b):
+  #N es el numero de iteraciones
+  # Tol es la tolerancia
+  # f es la función a la cual se le quiere
+  # obtener las raíces
+  # a es el extremo izquierdo del intervalo
+  # b es el extremo derecho del intervalo
+
+  fa,fb=f(a),f(b)
+  if fa*fb>0.0:
+    print("No tiene raíces en el intervalo")
+
+  x0=0.0
+  Iter=0
+  while Iter<=N:
+    x1=(a+b)/2.0
+    fx1=f(x1)
+    if abs(fx1)<=Tol and abs(x1-x0)<=Tol:
+      print("Tu raiz es "+str(x1))
+      return x1
+
+    if fa*fx1<0:
+      b=x1
+    if fx1*fb<0:
+      a=x1
+
+    x0=x1
+    Iter+=1
+
+  else:
+    print("El valor aproximado de tu raiz es "+str(x1))
+
+# Definición de las funciones
+def f_a(x):
+    return x - 2 - x**2
+
+def f_b(x):
+    return np.exp(x) - x**2 + 3*x - 2
+
+def f_c_neg3_neg2(x):
+    return 2*x*np.cos(2*x) - (x + 1)**2
+
+def f_c_neg1_0(x):
+    return 2*x*np.cos(2*x) - (x + 1)**2
+
+def f_d_02_03(x):
+    return x * np.cos(x) - 2*x**2 + 3*x - 1
+
+def f_d_12_13(x):
+    return x * np.cos(x) - 2*x**2 + 3*x - 1
+
+# Llamadas al método de bisección
+print("Resultado para f_a:")
+Biseccion(1e-5, 100, f_a, 0, 1)
+
+print("\nResultado para f_b:")
+Biseccion(1e-5, 100, f_b, 0, 1)
+
+print("\nResultado para f_c_neg3_neg2:")
+Biseccion(1e-5, 100, f_c_neg3_neg2, -3, -2)
+
+print("\nResultado para f_c_neg1_0:")
+Biseccion(1e-5, 100, f_c_neg1_0, -1, 0)
+
+print("\nResultado para f_d_02_03:")
+Biseccion(1e-5, 100, f_d_02_03, 0.2, 0.3)
+
+print("\nResultado para f_d_12_13:")
+Biseccion(1e-5, 100, f_d_12_13, 1.2, 1.3)
+
