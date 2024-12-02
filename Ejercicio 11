@@ -1,0 +1,62 @@
+# Yldefonso Hérnandez Danna Paola
+# Guzmán Martínez Frida Paola
+
+def P(x):
+    return 230 * x**4 + 18 * x**3 + 9 * x**2 - 221 * x - 9
+
+def P_derivada(x):
+    return 920 * x**3 + 54 * x**2 + 9 - 221
+
+def Secante(f, Tol, N, x0, x1):
+    n = 1
+    while N >= n:
+        fx0, fx1 = f(x0), f(x1)
+        xn = x1 - fx1 * ((x1 - x0) / float(fx1 - fx0))
+
+        if abs(f(xn)) <= Tol and abs(x1 - x0) <= Tol:
+            print("Tu raíz es " + str(xn))
+            return xn
+
+        x0 = x1
+        x1 = xn
+        n += 1
+
+    print("El valor aproximado de tu raíz es " + str(xn))
+    return xn
+
+# Usando el método de secante en el intervalo [-1, 0]
+raiz_secante_1 = Secante(P, 1e-6, 100, -1, 0)
+
+# Usando el método de secante en el intervalo [0, 1]
+raiz_secante_2 = Secante(P, 1e-6, 100, 0, 1)
+
+print("Raíz en [-1, 0] con Secante:", raiz_secante_1)
+print("Raíz en [0, 1] con Secante:", raiz_secante_2)
+
+def Newton(f, df, Tol, N, x0):
+    Iter = 0
+
+    while Iter <= N:
+        fx = f(x0)
+        dfx = df(x0)
+
+        xn = x0 - (fx / float(dfx))
+
+        if abs(f(xn)) <= Tol and abs(xn - x0) <= Tol:
+            print("Tu raíz es " + str(xn))
+            return xn
+
+        x0 = xn
+        Iter += 1
+
+    print("El valor aproximado de tu raíz es " + str(xn))
+    return xn
+
+# Usando el método de Newton en el intervalo [-1, 0]
+raiz_newton_1 = Newton(P, P_derivada, 1e-6, 100, -0.5)
+
+# Usando el método de Newton en el intervalo [0, 1]
+raiz_newton_2 = Newton(P, P_derivada, 1e-6, 100, 0.5)
+
+print("Raíz en [-1, 0] con Newton:", raiz_newton_1)
+print("Raíz en [0, 1] con Newton:", raiz_newton_2)
