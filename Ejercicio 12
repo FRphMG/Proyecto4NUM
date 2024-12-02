@@ -1,0 +1,51 @@
+# Yldefonso Hérnandez Danna Paola
+# Guzmán Martínez Frida Paola
+
+import numpy as np
+
+def F(x):
+    I, phi, delta = x
+    return np.array([
+        I * np.cos(phi) - 2/3,
+        np.cos(delta) + 0.91 * I * np.sin(phi + delta) - 1.22,
+        0.76 * I * np.cos(phi + delta) - np.sin(delta)])
+
+def J(x):
+    I, phi, delta = x
+    return np.array([
+        [np.cos(phi), -I * np.sin(phi), 0],
+        [0.91 * np.sin(phi + delta), 0.91 * I * np.cos(phi + delta), -np.sin(delta)],
+        [0.76 * np.cos(phi + delta), -0.76 * I * np.sin(phi + delta), -np.cos(delta)]])
+
+def Newton(f, df, Tol, N, x0):
+    Iter = 0
+
+    while Iter <= N:
+        fx = f(x0)
+        dfx = df(x0)
+
+        # Resolvemos el sistema lineal para obtener el paso
+        dx = np.linalg.solve(dfx, -fx)
+
+        # Actualizamos la estimación
+        x_new = x0 + dx
+
+        if np.linalg.norm(f(x_new)) <= Tol and np.linalg.norm(dx) <= Tol:
+            print("Tu raíz es " + str(x_new))
+            return x_new
+
+        x0 = x_new
+        Iter += 1
+
+    print("El valor aproximado de tu raíz es " + str(x_new))
+    return x_new
+
+# Condiciones iniciales
+condiciones_iniciales = [
+    np.array([1, 0.1, 0.1]),
+    np.array([1, 1, 1])]
+
+# Resolviendo para cada condición inicial
+for guess in condiciones_iniciales:
+    print(f"Resolviendo para la condición inicial: {guess}")
+    Newton(F, J, Tol=1e-6, N=100, x0=guess)
