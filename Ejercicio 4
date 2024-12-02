@@ -1,0 +1,64 @@
+# Yldefonso Hérnandez Danna Paola
+# Guzmán Martínez Frida Paola
+
+def Biseccion(Tol, N, f, a, b):
+    # N es el número máximo de iteraciones
+    # Tol es la tolerancia
+    # f es la función a la cual se le quiere obtener las raíces
+    # a es el extremo izquierdo del intervalo
+    # b es el extremo derecho del intervalo
+
+    fa, fb = f(a), f(b)
+
+    # Verificamos si hay un cambio de signo en el intervalo
+    if fa * fb > 0.0:
+        print("No tiene raíces en el intervalo [a, b]")
+        return None
+
+    x0 = 0.0  # Inicializamos x0 para comparar en la primera iteración
+    Iter = 0  # Contador de iteraciones
+
+    while Iter < N:  # Cambiamos <= a < para evitar un bucle infinito
+        x1 = (a + b) / 2.0  # Punto medio
+        fx1 = f(x1)  # Evaluamos la función en x1
+
+        # Imprimimos información sobre la iteración actual
+        print(f"Iteración {Iter + 1}: a={a:.6f}, b={b:.6f}, x1={x1:.6f}, f(x1)={fx1:.6f}")
+
+        # Verificamos si hemos encontrado una raíz o si el intervalo es suficientemente pequeño
+        if abs(fx1) <= Tol or abs(x1 - x0) <= Tol:
+            print("Tu raíz es " + str(x1))
+            return x1
+
+        # Actualizamos los extremos del intervalo según el signo de f(x1)
+        if fa * fx1 < 0:
+            b = x1
+            fb = fx1  # Actualizamos fb porque hemos movido b
+        else:
+            a = x1
+            fa = fx1  # Actualizamos fa porque hemos movido a
+
+        x0 = x1  # Guardamos el valor de x1 para la próxima iteración
+        Iter += 1
+
+    print("El valor aproximado de tu raíz es " + str(x1))
+    return x1
+
+# Definimos la función cuya raíz queremos encontrar
+def f(x):
+    return x**2 - 3
+
+# Llamamos al método con los valores deseados
+tolerancia = 1e-4  # Tolerancia deseada
+max_iteraciones = 100  # Número máximo de iteraciones
+
+# Intervalo inicial [a, b]
+a = 1.0
+b = 2.0
+
+# Ejecutamos el método de bisección
+raiz_aproximada = Biseccion(tolerancia, max_iteraciones, f, a, b)
+
+# Mostramos la raíz aproximada final
+if raiz_aproximada is not None:
+    print(f"Raíz aproximada: {raiz_aproximada:.6f}")
