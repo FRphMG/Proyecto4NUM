@@ -1,0 +1,50 @@
+# Yldefonso Hérnandez Danna Paola
+# Guzmán Martínez Frida Paola
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+def FixPoint(g, x0, Tol=0.01, N=20):
+    # La función FixPoint encuentra el punto fijo de una función g(x) mediante iteraciones.
+    # g: la función de la que se desea encontrar el punto fijo
+    # x0: condición inicial (valor de x)
+    # Tol: tolerancia, que determina cuando detener las iteraciones (valor por defecto 0.01)
+    # N: número máximo de iteraciones (valor por defecto 20)
+    
+    n = 1  # Inicialización del contador de iteraciones
+    while n <= N:
+        x1 = g(x0)  # Calcula el siguiente valor de x usando la función g
+        if abs(x1 - x0) <= Tol:  # Si la diferencia entre el valor actual y el anterior es menor o igual a la tolerancia
+            print(f"El punto fijo es {x1}")  # Se imprime el punto fijo encontrado
+            return x1  # Se retorna el punto fijo
+        x0 = x1  # Actualiza x0 para la siguiente iteración
+        n += 1  # Incrementa el número de iteraciones
+    else:
+        print(f"Una aproximación del punto fijo es {x1}")  # Si no se encuentra un punto fijo exacto, se retorna la aproximación
+        return x1
+
+# Definimos la función g(x) = π + 0.5 * sin(x / 2), cuya raíz se busca como punto fijo
+def g(x):
+    return np.pi + 0.5 * np.sin(x / 2)
+
+# Llamada a la función FixPoint con la función g(x), un valor inicial x0=1, tolerancia 1e-2 y 20 iteraciones
+punto_fijo = FixPoint(g, 1, 1e-2, 20)
+
+# Graficamos la función g(x) y la línea y=x para visualizar el punto fijo
+x_vals = np.linspace(0, 2 * np.pi, 400)  # Generamos 400 puntos de x entre 0 y 2π
+g_vals = g(x_vals)  # Evaluamos g(x) en esos puntos
+
+# Graficamos la función g(x) en azul
+plt.plot(x_vals, g_vals, label=r'$g(x) = \pi + 0.5 \sin(x / 2)$', color='b')
+
+# Graficamos la línea y=x en rojo (línea discontinua)
+plt.plot(x_vals, x_vals, label=r'$y = x$', color='r', linestyle='--')
+
+# Etiquetas de los ejes y leyenda
+plt.xlabel('x')
+plt.ylabel('g(x)')
+plt.legend()  # Añadir la leyenda para identificar las curvas
+plt.grid(True)  # Habilitar la cuadrícula
+
+# Mostrar el gráfico
+plt.show()
